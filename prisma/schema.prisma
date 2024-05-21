@@ -27,6 +27,51 @@ model countries {
   continent  continents?
 }
 
+model categories {
+  category_id   Int        @id @default(autoincrement())
+  category_name String?    @db.VarChar(255)
+  description   String?    @db.VarChar(255)
+  products      products[]
+}
+
+model customers {
+  customer_id   Int      @id @default(autoincrement())
+  customer_name String?  @db.VarChar(255)
+  contact_name  String?  @db.VarChar(255)
+  address       String?  @db.VarChar(255)
+  city          String?  @db.VarChar(255)
+  postal_code   String?  @db.VarChar(255)
+  country       String?  @db.VarChar(255)
+  orders        orders[]
+}
+
+model order_details {
+  order_detail_id Int       @id @default(autoincrement())
+  order_id        Int?
+  product_id      Int?
+  quantity        Int?
+  orders          orders?   @relation(fields: [order_id], references: [order_id], onDelete: NoAction, onUpdate: NoAction)
+  products        products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model orders {
+  order_id      Int             @id @default(autoincrement())
+  customer_id   Int?
+  order_date    DateTime?       @db.Date
+  order_details order_details[]
+  customers     customers?      @relation(fields: [customer_id], references: [customer_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model products {
+  product_id    Int             @id @default(autoincrement())
+  product_name  String?         @db.VarChar(255)
+  category_id   Int?
+  unit          String?         @db.VarChar(255)
+  price         Decimal?        @db.Decimal(10, 2)
+  order_details order_details[]
+  categories    categories?     @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 enum continents {
   Africa
   Antarctica
