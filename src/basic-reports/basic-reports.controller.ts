@@ -39,4 +39,15 @@ export class BasicReportsController {
     pdfDoc.pipe(response);
     pdfDoc.end();
   }
+
+  //countries
+  @Get('countries')
+  async getCountriesReport(@Res() response: Response) {
+    const pdfDoc = await this.basicReportsService.getCountries();
+
+    response.setHeader('Content-Type', 'application/pdf');
+    pdfDoc.info.Title = 'Countries-Report';
+    pdfDoc.pipe(response);
+    pdfDoc.end();
+  }
 }
