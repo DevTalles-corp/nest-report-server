@@ -16,3 +16,23 @@ model employees {
   hours_per_day Int
   work_schedule String   @db.VarChar(50)
 }
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model countries {
+  id         BigInt      @id @default(autoincrement())
+  name       String?
+  iso2       String
+  iso3       String?
+  local_name String?
+  continent  continents?
+}
+
+enum continents {
+  Africa
+  Antarctica
+  Asia
+  Europe
+  Oceania
+  North_America @map("North America")
+  South_America @map("South America")
+}
